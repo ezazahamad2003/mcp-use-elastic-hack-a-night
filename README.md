@@ -62,6 +62,13 @@ and activate
 ```
 source .venv/bin/activate
 ```
+
+### 4 Install mcp-use
+
+```bash
+uv pip install mcp-use
+```
+
 ### 4 Create a project 
 
 ```bash 
