@@ -45,6 +45,36 @@ the challenge is to create an MCP agent that can search and dynamically connect 
 
 # Set up
 
+### 1 Clone the repo
+```bash 
+git clone git@github.com:mcp-use/mcp-use-elastic-hack-a-night.git
+```
+### 2 Install UV
+Install UV following the instructions from this [link](https://docs.astral.sh/uv/getting-started/installation/)
+
+### 3 Create and Activate the virtual environment
+
+Run 
+```bash 
+uv venv
+```
+and activate
+```
+source .venv/bin/activate
+```
+### 4 Create a project 
+
+```bash 
+uvx mcp-use create elastic --agent
+```
+
+### 5 Make sure it works
+Run the followign command to ensure it works: 
+```bash 
+python elastic/run.py
+```
+
 ## Elastic
 
-## mcp-use 
+## mcp-use
+
