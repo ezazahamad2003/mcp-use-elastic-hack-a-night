@@ -41,7 +41,7 @@ class MCPServer:
     config: Dict[str, Any]
 ```
 
-the challenge is to create an MCP agent that can search and dynamically connect to a server to perform some interesting task. 
+the challenge is to create an MCP agent that can search and dynamically connect to a server to perform some interesting task.
 
 # Set up
 
@@ -49,6 +49,15 @@ the challenge is to create an MCP agent that can search and dynamically connect 
 ```bash 
 git clone git@github.com:mcp-use/mcp-use-elastic-hack-a-night.git
 ```
+
+### Set up Elastic
+
+1 - Log in or create an account at (elastic)[https://www.elastic.co/]
+2 - Create a new index from file by clicking **Upload File** 
+3 - Upload the csv `public_server_rows.csv` in the repo
+4 - Create an API key and copy it in a `.env` file in the repo with name `ELASTIC_API_KEY`
+5 - Copy the Elastic host name for your index and copy the url in the `.env` file under `ELASTIC_INDEX_URL`
+
 ### 2 Install UV
 Install UV following the instructions from this [link](https://docs.astral.sh/uv/getting-started/installation/)
 
@@ -63,25 +72,21 @@ and activate
 source .venv/bin/activate
 ```
 
-### 4 Install mcp-use
+### 4 Install requirements
 
 ```bash
-uv pip install mcp-use
+uv pip install -r requirements.txt
 ```
 
-### 4 Create a project 
-
+### 5 Make sure search works
+Run the following command to ensure the search functionality works: 
 ```bash 
-uvx mcp-use create elastic --agent
+python search.py
 ```
-
-### 5 Make sure it works
-Run the followign command to ensure it works: 
+it should return some results like: 
 ```bash 
-python elastic/run.py
+(elastic) ➜  elastic git:(main) ✗ python search.py
+[{'_index': 'public_servers', '_id': 'F0AtupgBA9pwI1pDAbJB', '_score': 5.6726255, '_source': {'environment_variables_schema': '{"type":"object","required":[],"properties":{}}', 'description': 'Integrates with the Tavily API to provide web search capabilities, enabling internet searches and fact-checking for up-to-date information retrieval.', 'created_at': '2025-08-13 02:47:33.760164+00', 'github_repo_url': 'https://github.com/algonacci/mcp-tavily-search', 'github_stars': 0, 'tools': '[]', 'usable': False, 'search_vector': "'api':7 'capabl':12 'check':19 'date':24 'enabl':13 'fact':18 'fact-check':17 'inform':25 'integr':3 'internet':14 'provid':9 'retriev':26 'search':2,11,15 'tavili':1,6 'up-to-d':21 'web':10", 'updated_at': '2025-08-13 02:47:33.76017+00', 'approved_at': '2025-08-13 02:47:33.760172+00', 'name': 'Tavily Search', 'namespace': 'algonacci', 'id': 'ae6de2d8-f963-35d8-0af8-ba57be494c1b', 'categories': '["general"]', 'github_user_id': 0, 'config': '{"mcpServers":{"tavily_search":{"args":["--directory","%USERPROFILE%/Documents/GitHub/mcp-tavily-search","run","python","main.py"],"command":"uv"}}}', 'slug': 'algonacci-tavily-search-tavily-search', 'github_i\
 ```
 
-## Elastic
-
-## mcp-use
-
+# Time to Hack! 
