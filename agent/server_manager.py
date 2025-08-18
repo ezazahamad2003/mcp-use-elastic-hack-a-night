@@ -32,11 +32,11 @@ class ConnectPlaywrightTool(BaseTool):
         if server_name not in self.server_manager._server_tools:
             playwright_connector = client.get_session(server_name).connector
             new_tools = await adapter._create_tools_from_connectors([playwright_connector])
-            self.server_manager._server_tools[server_name] = new_tools
+            self.server_manager._server_tools.update({tool.name: tool for tool in new_tools})
 
         # 3. Set the server as active
         self.server_manager.active_server = server_name
-        num_tools = len(self.server_manager._server_tools[server_name])
+        num_tools = len(self.server_manager._server_tools)
         return f"Successfully connected to Playwright. {num_tools} web browsing tools are now available."
 
 
@@ -45,8 +45,7 @@ class ElasticServerManager(BaseServerManager):
     def __init__(self, mcp_client: MCPClient):
         self.mcp_client = mcp_client
         self.adapter = LangChainAdapter()
-        self.active_server: str | None = None
-        self._server_tools: dict[str, list[BaseTool]] = {}
+        self._server_tools: dict[str, BaseTool] = {}
         self._management_tools: list[BaseTool] = [ConnectPlaywrightTool(server_manager=self)]
         self._initialized = False
 
@@ -54,14 +53,13 @@ class ElasticServerManager(BaseServerManager):
         self._initialized = True
         print("Dynamic ServerManager initialized.")
 
+    def add_tool(self, tool: BaseTool):
+        self._server_tools[tool.name] = tool
+
     @property
     def tools(self) -> list[BaseTool]:
         """Dynamically assembles the list of available tools."""
-        if self.active_server and self.active_server in self._server_tools:
-            # If a server is active, provide its tools PLUS the management tools
-            return self._management_tools + self._server_tools[self.active_server]
-        # Otherwise, just provide the management tools
-        return self._management_tools
+        return self._management_tools + list(self._server_tools.values())
 
     def has_tool_changes(self, current_tool_names: set[str]) -> bool:
         """Checks if the toolset has changed by comparing tool names."""
