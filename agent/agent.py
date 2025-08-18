@@ -23,6 +23,7 @@ async def main():
     agent = MCPAgent(
         llm=ChatOpenAI(model="gpt-4o"),
         use_server_manager=True,
+        client=client,
         server_manager=ElasticServerManager(mcp_client=client),
     )
 
