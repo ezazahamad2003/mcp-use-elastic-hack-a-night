@@ -62,7 +62,7 @@ git clone git@github.com:mcp-use/mcp-use-elastic-hack-a-night.git
 1. Log in or create an account at (elastic)[https://www.elastic.co/]
 2. Select the Elasticsearch use case
 3. Select the Elastic Cloud Serverless deployment option
-4. Create a new index from file by clicking **Upload File** 
+4. Create a new index called `public_servers` from file by clicking **Upload File** 
 5. Upload the csv `public_server_rows.csv` in the repo
 6. In the import settings, select advanced, copy and replace the mapping for the fields `created_at`, `updated_at` and `approved_at` to ensure the date fields are the correct types to be searchable.
 ```json
@@ -119,6 +119,10 @@ it should return some results like:
 (elastic) ➜  elastic git:(main) ✗ python search.py
 [{'_index': 'public_servers', '_id': 'F0AtupgBA9pwI1pDAbJB', '_score': 5.6726255, '_source': {'environment_variables_schema': '{"type":"object","required":[],"properties":{}}', 'description': 'Integrates with the Tavily API to provide web search capabilities, enabling internet searches and fact-checking for up-to-date information retrieval.', 'created_at': '2025-08-13 02:47:33.760164+00', 'github_repo_url': 'https://github.com/algonacci/mcp-tavily-search', 'github_stars': 0, 'tools': '[]', 'usable': False, 'search_vector': "'api':7 'capabl':12 'check':19 'date':24 'enabl':13 'fact':18 'fact-check':17 'inform':25 'integr':3 'internet':14 'provid':9 'retriev':26 'search':2,11,15 'tavili':1,6 'up-to-d':21 'web':10", 'updated_at': '2025-08-13 02:47:33.76017+00', 'approved_at': '2025-08-13 02:47:33.760172+00', 'name': 'Tavily Search', 'namespace': 'algonacci', 'id': 'ae6de2d8-f963-35d8-0af8-ba57be494c1b', 'categories': '["general"]', 'github_user_id': 0, 'config': '{"mcpServers":{"tavily_search":{"args":["--directory","%USERPROFILE%/Documents/GitHub/mcp-tavily-search","run","python","main.py"],"command":"uv"}}}', 'slug': 'algonacci-tavily-search-tavily-search', 'github_i\
 ```
+
+### Set LLM API KEY
+
+You will have to set the `ANTHROPIC_API_KEY` in your `.env` file, we will give an API key in the discord channel.
 
 ### Run the default agent 
 

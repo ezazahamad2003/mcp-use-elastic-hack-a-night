@@ -4,7 +4,7 @@ using a custom ServerManager.
 """
 
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 
 from .server_manager import ElasticServerManager
 from mcp_use import MCPClient, MCPAgent
@@ -15,7 +15,7 @@ load_dotenv()
 client = MCPClient(config={})
 
 search_agent = MCPAgent(
-    llm=ChatOpenAI(model="gpt-4o"),
+    llm=ChatAnthropic(model="claude-3-7-sonnet-latest"),
     use_server_manager=True,
     client=client,
     server_manager=ElasticServerManager(mcp_client=client),
