@@ -230,3 +230,12 @@ class ElasticServerManager(BaseServerManager):
         """Checks if the toolset has changed by comparing tool names."""
         return {tool.name for tool in self.tools} != current_tool_names
 ```
+
+
+## Links 
+
+## More Links
+- [mcp-use GitHub Repository](https://github.com/mcp-use/mcp-use)
+- [mcp-use Documentation](https://docs.mcp-use.com)
+- [mcp-use PyPI Package](https://pypi.org/project/mcp-use/)
+- [MCP Protocol Specification](https://spec.modelcontextprotocol.io/)
