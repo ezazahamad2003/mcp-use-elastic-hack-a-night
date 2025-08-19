@@ -45,6 +45,12 @@ the challenge is to create an MCP agent that can search and dynamically connect 
 
 # Set up
 
+### Join Discord chat
+
+[DISCORD JOIN LINK](https://discord.gg/WjFWaWD5)
+
+We will use this to share links and/or information! You can use it to ask questions as well! 
+
 ### Clone the repo
 ```bash 
 git clone git@github.com:mcp-use/mcp-use-elastic-hack-a-night.git
@@ -82,6 +88,8 @@ git clone git@github.com:mcp-use/mcp-use-elastic-hack-a-night.git
 
 ### Install UV
 Install UV following the instructions from this [link](https://docs.astral.sh/uv/getting-started/installation/)
+
+If you have another package manager it is fine, but following instructions might differ!
 
 ### Create and Activate the virtual environment
 
