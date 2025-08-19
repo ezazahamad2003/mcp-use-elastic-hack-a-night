@@ -149,18 +149,44 @@ The config returned by the search (contained in the CSV) will have one of the tw
 ```json
 {
     "mcpServers": {
-        "server1": {"actual server config"}
+        "server1": {
+    // usual mcp configurations entries 
+    "url":"url",
+    "command": "command",
+    "args":"args",
+    ...
+}
     }
 }
 ```
-or 
+or the actual server config
 ```json
 {
     // usual mcp configurations entries 
-    "url":""
-    "command":
+    "url":"url",
+    "command": "command",
+    "args":"args",
+    ...
 }
 ```
+
+You should implement a simple function that converts the configuration in one or another format based on what you need.
+
+e.g. 
+
+```python 
+def normalize_server_config(config: dict) -> dict:
+    """
+    Normalizes the server configuration to a consistent format.
+    """
+    if "mcpServers" in config and isinstance(config["mcpServers"], dict):
+        servers = config["mcpServers"]
+        if servers:
+            # Return the first server's configuration
+            return next(iter(servers.values()))
+    return config
+```
+
 
 ## Example Server Manager
 
