@@ -173,7 +173,7 @@ response = client.search(
 ---
 
 ## More Links
-
+- [Retrievers](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/retrievers)
 - [Multi-match query](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-multi-match-query)
 - [Function score query](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-function-score-query)
 - [Boolean query](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-bool-query)
