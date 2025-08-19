@@ -51,7 +51,6 @@ class ElasticServerManager(BaseServerManager):
 
     async def initialize(self) -> None:
         self._initialized = True
-        print("Dynamic ServerManager initialized.")
 
     def add_tool(self, tool: BaseTool):
         self._server_tools[tool.name] = tool
