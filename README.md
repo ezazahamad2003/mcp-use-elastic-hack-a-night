@@ -45,23 +45,45 @@ the challenge is to create an MCP agent that can search and dynamically connect 
 
 # Set up
 
-### 1 Clone the repo
+### 1. Clone the repo
 ```bash 
 git clone git@github.com:mcp-use/mcp-use-elastic-hack-a-night.git
 ```
 
-### Set up Elastic
+### 2. Set up Elastic
 
-1 - Log in or create an account at (elastic)[https://www.elastic.co/]
-2 - Create a new index from file by clicking **Upload File** 
-3 - Upload the csv `public_server_rows.csv` in the repo
-4 - Create an API key and copy it in a `.env` file in the repo with name `ELASTIC_API_KEY`
-5 - Copy the Elastic host name for your index and copy the url in the `.env` file under `ELASTIC_INDEX_URL`
+1. Log in or create an account at (elastic)[https://www.elastic.co/]
+2. Select the Elasticsearch use case
+3. Select the Elastic Cloud Serverless deployment option
+4. Create a new index from file by clicking **Upload File** 
+5. Upload the csv `public_server_rows.csv` in the repo
+6. In the import settings, select advanced, copy and replace the mapping for the fields `created_at`, `updated_at` and `approved_at` to ensure the date fields are the correct types to be searchable.
+```json
+ "properties": {
+      "created_at": {
+        "type": "date",
+        "format": "yyyy-MM-dd HH:mm:ss.SSSX||yyyy-MM-dd HH:mm:ss.SSSSX||yyyy-MM-dd HH:mm:ss.SSSSSX||yyyy-MM-dd HH:mm:ss.SSSSSSX",
+        "ignore_malformed": true
+      },
+      "updated_at": {
+        "type": "date",
+        "format": "yyyy-MM-dd HH:mm:ss.SSSX||yyyy-MM-dd HH:mm:ss.SSSSX||yyyy-MM-dd HH:mm:ss.SSSSSX||yyyy-MM-dd HH:mm:ss.SSSSSSX",
+        "ignore_malformed": true
+      },
+      "approved_at": {
+        "type": "date",
+        "format": "yyyy-MM-dd HH:mm:ss.SSSX||yyyy-MM-dd HH:mm:ss.SSSSX||yyyy-MM-dd HH:mm:ss.SSSSSX||yyyy-MM-dd HH:mm:ss.SSSSSSX",
+        "ignore_malformed": true
+      }
+    }
+```
+8. Create an API key and copy it in a `.env` file in the repo with name `ELASTIC_API_KEY`
+9. Copy the Elastic host name for your index and copy the url in the `.env` file under `ELASTIC_INDEX_URL`
 
-### 2 Install UV
+### 3. Install UV
 Install UV following the instructions from this [link](https://docs.astral.sh/uv/getting-started/installation/)
 
-### 3 Create and Activate the virtual environment
+### 4. Create and Activate the virtual environment
 
 Run 
 ```bash 
@@ -72,13 +94,13 @@ and activate
 source .venv/bin/activate
 ```
 
-### 4 Install requirements
+### 5. Install requirements
 
 ```bash
 uv pip install -r requirements.txt
 ```
 
-### 5 Make sure search works
+### 6. Make sure search works
 Run the following command to ensure the search functionality works: 
 ```bash 
 python search.py
