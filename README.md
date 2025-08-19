@@ -119,6 +119,30 @@ it should return some results like:
 [{'_index': 'public_servers', '_id': 'F0AtupgBA9pwI1pDAbJB', '_score': 5.6726255, '_source': {'environment_variables_schema': '{"type":"object","required":[],"properties":{}}', 'description': 'Integrates with the Tavily API to provide web search capabilities, enabling internet searches and fact-checking for up-to-date information retrieval.', 'created_at': '2025-08-13 02:47:33.760164+00', 'github_repo_url': 'https://github.com/algonacci/mcp-tavily-search', 'github_stars': 0, 'tools': '[]', 'usable': False, 'search_vector': "'api':7 'capabl':12 'check':19 'date':24 'enabl':13 'fact':18 'fact-check':17 'inform':25 'integr':3 'internet':14 'provid':9 'retriev':26 'search':2,11,15 'tavili':1,6 'up-to-d':21 'web':10", 'updated_at': '2025-08-13 02:47:33.76017+00', 'approved_at': '2025-08-13 02:47:33.760172+00', 'name': 'Tavily Search', 'namespace': 'algonacci', 'id': 'ae6de2d8-f963-35d8-0af8-ba57be494c1b', 'categories': '["general"]', 'github_user_id': 0, 'config': '{"mcpServers":{"tavily_search":{"args":["--directory","%USERPROFILE%/Documents/GitHub/mcp-tavily-search","run","python","main.py"],"command":"uv"}}}', 'slug': 'algonacci-tavily-search-tavily-search', 'github_i\
 ```
 
+### Run the default agent 
+
+You can run the agent in the /agent folder using the scripts `run.py` and `chat.py` with: 
+```python 
+python chat.py # or python run.py
+```
+
+Test it let us know if something is wrong. 
+
+# Time to Hack!
+
+Now the goal should be clear, we want an agent that can automatically connect to MCP servers, now:
+* a bonus point, is if it can ask the user credentials if they are needed.
+* a second bonus point is if it can connect to multiple servers at once
+
+To do this feel free to use any stack and approach you'd like, but we'd love you to use MCPAgent inside mcp-use, 
+we have a starter example in this repo. Some explanation of how it works below.
+
+Oth you can create your own agent, but here we strongly encourage to use MCPClient from mcp-use, also in the repo 
+example.
+
+Gooooo!
+
+
 > **⚠️ CAUTION**: Not all servers are properly formatted
 The config returned by the search (contained in the CSV) will have one of the two following formats:
 
@@ -137,21 +161,6 @@ or
     "command":
 }
 ```
-
-
-# Time to Hack!
-
-Now the goal should be clear, we want an agent that can automatically connect to MCP servers, now:
-* a bonus point, is if it can ask the user credentials if they are needed.
-* a second bonus point is if it can connect to multiple servers at once
-
-To do this feel free to use any stack and approach you'd like, but we'd love you to use MCPAgent inside mcp-use, 
-we have a starter example in this repo. Some explanation of how it works below.
-
-Oth you can create your own agent, but here we strongly encourage to use MCPClient from mcp-use, also in the repo 
-example.
-
-Gooooo!
 
 ## Example Server Manager
 
