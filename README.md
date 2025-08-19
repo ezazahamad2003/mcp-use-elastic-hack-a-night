@@ -1,4 +1,5 @@
-# mcp-use-elastic-hack-a-night
+
+![Elastic MCP Agent](static/image.jpeg)
 
 Hello, yall.
 
