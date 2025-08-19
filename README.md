@@ -234,7 +234,6 @@ class ElasticServerManager(BaseServerManager):
 
 ## Links 
 
-## More Links
 - [mcp-use GitHub Repository](https://github.com/mcp-use/mcp-use)
 - [mcp-use Documentation](https://docs.mcp-use.com)
 - [mcp-use PyPI Package](https://pypi.org/project/mcp-use/)
