@@ -50,7 +50,7 @@ the challenge is to create an MCP agent that can search and dynamically connect 
 git clone git@github.com:mcp-use/mcp-use-elastic-hack-a-night.git
 ```
 
-### 2. Set up Elastic
+### 2. Set up an Elastic Cloud Serverless project
 
 1. Log in or create an account at (elastic)[https://www.elastic.co/]
 2. Select the Elasticsearch use case
