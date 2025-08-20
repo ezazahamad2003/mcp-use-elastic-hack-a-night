@@ -159,3 +159,39 @@ cython_debug/
 #  https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
 #  and add them here:
 .idea/
+
+# MCP Project Specific
+# Test files and temporary scripts
+test_*.py
+debug_*.py
+temp_*.py
+
+# VS Code settings
+.vscode/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+desktop.ini
+$RECYCLE.BIN/
+
+# Node modules (for any npx MCP servers)
+node_modules/
+package-lock.json
+
+# MCP Server logs and temporary files
+mcp_*.log
+*.mcp.log
+
+# API Keys and secrets (backup protection)
+*.key
+*.pem
+secrets.json
+credentials.json
