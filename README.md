@@ -44,6 +44,25 @@ class MCPServer:
 
 the challenge is to create an MCP agent that can search and dynamically connect to a server to perform some interesting task.
 
+## Web UI (Optional)
+
+A minimal web UI is included to chat with the agent from your browser.
+
+### Run the web server
+
+```
+python web.py
+```
+
+Then open `http://127.0.0.1:8000` in your browser.
+
+The UI supports:
+- Sending chat messages to the same agent used by the CLI
+- Clearing conversation history
+- Displaying formatted tool results inline
+
+Environment variables are read from your `.env` (e.g., `GEMINI_API_KEY`, `ELASTIC_INDEX_URL`, `ELASTIC_API_KEY`).
+
 # Set up
 
 ### Join Discord chat

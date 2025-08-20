@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MCP Agent Web</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.1/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+      :root { color-scheme: dark light; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: #0b0f13; color: #e6edf3;
+      }
+      .app {
+        display: grid; grid-template-rows: auto 1fr auto; min-height: 100vh;
+      }
+      header {
+        padding: 16px 20px; border-bottom: 1px solid #1f2937; background: #0f141a;
+        display: flex; align-items: center; gap: 10px;
+      }
+      header h1 { font-size: 18px; margin: 0; font-weight: 700; letter-spacing: .2px; }
+      header .pill { font-size: 12px; padding: 4px 10px; border-radius: 999px; background: #0b1220; border: 1px solid #1e293b; color: #9fb3c8; }
+      .container { max-width: 980px; margin: 0 auto; width: 100%; padding: 16px; }
+      .messages { display: flex; flex-direction: column; gap: 14px; padding: 4px 8px 24px; overflow-y: auto; height: calc(100vh - 210px); }
+      .msg-row { display: flex; gap: 10px; align-items: flex-start; }
+      .avatar { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; }
+      .avatar.user { background: #1e3a8a; }
+      .avatar.assistant { background: #0b1220; border: 1px solid #1e293b; }
+      .bubble { padding: 12px 14px; border-radius: 12px; max-width: 85%; line-height: 1.6; word-wrap: break-word; }
+      .bubble.user { background: linear-gradient(180deg, #1f3a8a, #172554); border: 1px solid #253264; }
+      .bubble.assistant { background: #0b0f13; border: 1px solid #1e293b; box-shadow: 0 0 0 1px rgba(30,41,59,.2) inset; }
+      .bubble.assistant .meta { color: #9fb3c8; font-size: 12px; margin-bottom: 6px; }
+      .tool-block { background: #0b2012; border: 1px solid #173a2a; border-radius: 10px; padding: 10px 12px; margin: 10px 0; }
+      .tool-title { font-weight: 700; color: #7ecfa5; margin-bottom: 6px; }
+      .code { background: #0b1220; border: 1px solid #1e293b; border-radius: 8px; padding: 10px 12px; overflow-x: auto; }
+      pre code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 13px; }
+      .thinking { color: #9fb3c8; font-size: 12px; display: inline-flex; gap: 4px; align-items: center; }
+      .dots span { width: 6px; height: 6px; display: inline-block; background: #9fb3c8; border-radius: 50%; animation: blink 1.4s infinite both; }
+      .dots span:nth-child(2) { animation-delay: .2s; }
+      .dots span:nth-child(3) { animation-delay: .4s; }
+      @keyframes blink { 0%, 80%, 100% { opacity: .2 } 40% { opacity: 1 } }
+      form {
+        display: flex; gap: 10px; padding: 16px; border-top: 1px solid #1f2937; background: #0f141a;
+        position: sticky; bottom: 0;
+      }
+      textarea { flex: 1; padding: 12px 14px; border-radius: 10px; border: 1px solid #374151; background: #0b0f13; color: #e6edf3; resize: none; min-height: 44px; max-height: 160px; }
+      button {
+        padding: 12px 16px; border-radius: 10px; border: 1px solid #374151; background: #1e3a8a; color: #e6edf3; cursor: pointer;
+      }
+      .hint { color: #9fb3c8; font-size: 12px; margin-top: 8px; }
+      .row { display: flex; gap: 10px; align-items: center; }
+      .spacer { flex: 1; }
+      .copy { background: #0b1220; border: 1px solid #1e293b; color: #9fb3c8; padding: 4px 8px; border-radius: 8px; font-size: 12px; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <div class="row container">
+          <h1>MCP Agent</h1>
+          <span class="pill">Gemini + Elasticsearch + MCP</span>
+          <div class="spacer"></div>
+          <button id="clear">Clear</button>
+        </div>
+      </header>
+      <main class="container">
+        <div id="messages" class="messages"></div>
+      </main>
+      <form id="form" class="container">
+        <textarea id="input" placeholder="Type a message... Try: Find me weather servers" autocomplete="off"></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+
+    <script>
+      const elMessages = document.getElementById('messages');
+      const elForm = document.getElementById('form');
+      const elInput = document.getElementById('input');
+      const elClear = document.getElementById('clear');
+
+      // Configure marked + highlight
+      marked.setOptions({
+        highlight: function(code, lang) {
+          try { return hljs.highlight(code, { language: lang }).value; }
+          catch { return hljs.highlightAuto(code).value; }
+        },
+        breaks: true
+      });
+
+      function renderMarkdown(md) {
+        // Normalize triple backtick blocks that sometimes appear surrounded by text
+        return marked.parse(md || '');
+      }
+
+      function msgRow(role, html) {
+        const row = document.createElement('div');
+        row.className = 'msg-row';
+        const avatar = document.createElement('div');
+        avatar.className = `avatar ${role}`;
+        avatar.textContent = role === 'user' ? 'You' : 'AI';
+        const bubble = document.createElement('div');
+        bubble.className = `bubble ${role}`;
+        bubble.innerHTML = html;
+        row.appendChild(avatar);
+        row.appendChild(bubble);
+        return row;
+      }
+
+      function addMessage(role, text) {
+        const html = renderMarkdown(text);
+        const row = msgRow(role, html);
+        elMessages.appendChild(row);
+        elMessages.scrollTop = elMessages.scrollHeight;
+        // Highlight any late-added code blocks
+        row.querySelectorAll('pre code').forEach(block => hljs.highlightElement(block));
+      }
+
+      let thinkingRow = null;
+      function showThinking() {
+        thinkingRow = document.createElement('div');
+        thinkingRow.className = 'msg-row';
+        thinkingRow.innerHTML = `
+          <div class="avatar assistant">AI</div>
+          <div class="bubble assistant"><span class="thinking">Thinking <span class="dots"><span></span><span></span><span></span></span></span></div>
+        `;
+        elMessages.appendChild(thinkingRow);
+        elMessages.scrollTop = elMessages.scrollHeight;
+      }
+      function hideThinking() {
+        if (thinkingRow && thinkingRow.parentNode) thinkingRow.parentNode.removeChild(thinkingRow);
+        thinkingRow = null;
+      }
+
+      async function sendMessage(text) {
+        addMessage('user', text);
+        showThinking();
+        try {
+          const res = await fetch('/api/chat', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text })
+          });
+          const data = await res.json();
+          hideThinking();
+          if (data.error) {
+            addMessage('assistant', `Error: ${data.error}`);
+          } else {
+            addMessage('assistant', data.response);
+          }
+        } catch (err) {
+          hideThinking();
+          addMessage('assistant', `Network error: ${err}`);
+        }
+      }
+
+      function autoresize() {
+        elInput.style.height = 'auto';
+        elInput.style.height = Math.min(elInput.scrollHeight, 160) + 'px';
+      }
+      elInput.addEventListener('input', autoresize);
+      autoresize();
+
+      elForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = elInput.value.trim();
+        if (!text) return;
+        elInput.value = '';
+        autoresize();
+        sendMessage(text);
+      });
+
+      elClear.addEventListener('click', async () => {
+        elMessages.innerHTML = '';
+        addMessage('assistant', 'Conversation cleared.');
+        await fetch('/api/chat', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: 'clear', clear: true })
+        });
+      });
+    </script>
+  </body>
+  </html>
+
+
